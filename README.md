@@ -21,6 +21,16 @@ One markdown table per deck. `tags` are space-separated and become the sets you 
 | 노래 | Song | l04-c1 | 노래하다 = to sing |
 ```
 
+## Conjugations
+
+If the deck folder has a `conjugations.md`, the app gets a Conjugate mode: you see the dictionary form and a target form (e.g. `춥다` + `아/어요`) and type the result. Pick forms and rules (ㅂ irregular, ㄹ stem, ...) to narrow the drill. The word list shows your accuracy per rule and per form.
+
+```
+| korean | english | tags | pos | rule | 아/어요 | 지요 | (으)러 가요 | 고 싶어요 |
+```
+
+Every column after `rule` is a form. `nan` = the form doesn't exist for that word. 고 싶어해요 is derived from 고 싶어요, and typing accepts 죠 for 지요.
+
 ## Stats
 
 `decks/<course>/<name>.md` saves to `stats/<course>/<name>.json`, keyed by korean + english. Editing tags or notes keeps a word's history. Editing the korean or english resets it.

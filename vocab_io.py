@@ -45,6 +45,19 @@ class Word:
         acc = [(c + 1) / (n + 2) for c, n in (self.ko_en, self.en_ko)]
         return round(100 * (0.4 * acc[0] + 0.4 * acc[1] + 0.2 * self.box / MAX_BOX))
 
+    def stats(self, direction: str) -> tuple[int, int]:
+        if direction == "ko→en":
+            return self.ko_en
+        if direction == "en→ko":
+            return self.en_ko
+        return (self.ko_en[0] + self.en_ko[0], self.ko_en[1] + self.en_ko[1])
+
+    def ask(self, direction: str) -> str:
+        return self.korean if direction == "ko→en" else self.english
+
+    def expect(self, direction: str) -> str:
+        return self.english if direction == "ko→en" else self.korean
+
 
 def fmt_ratio(r: tuple[int, int]) -> str:
     return f"{r[0]}/{r[1]}" if r[1] else ""

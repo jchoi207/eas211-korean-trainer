@@ -1,4 +1,8 @@
-"""Study session: word selection, ordering, and requeueing misses."""
+"""Study session: word selection, ordering, and requeueing misses.
+
+Works on vocab Words and conjugation Cards alike: both have key, tags, box, last,
+stats(direction), ask(direction) and expect(direction).
+"""
 
 import random
 from datetime import date
@@ -13,18 +17,10 @@ def select(words: list[Word], tags: set[str]) -> list[Word]:
     return [w for w in words if not tags or tags & set(w.tags)]
 
 
-def _stats(w: Word, direction: str) -> tuple[int, int]:
-    if direction == "ko→en":
-        return w.ko_en
-    if direction == "en→ko":
-        return w.en_ko
-    return (w.ko_en[0] + w.en_ko[0], w.ko_en[1] + w.en_ko[1])
-
-
 def worst(words: list[Word], n: int, direction: str) -> list[Word]:
     """The n words with the worst record in this direction. Unseen words rank last."""
     def rank(w: Word):
-        c, a = _stats(w, direction)
+        c, a = w.stats(direction)
         miss_rate = (a - c + 1) / (a + 2)  # smoothed so 0/1 isn't worse than 3/10
         return (a == 0, -miss_rate, w.box, w.last)
 
@@ -43,7 +39,7 @@ def weighted_order(words: list[Word]) -> list[Word]:
 
 class Session:
     def __init__(self, words: list[Word], direction: str):
-        self.direction = direction  # "ko→en" | "en→ko" | "mixed"
+        self.direction = direction  # "ko→en" | "en→ko" | "mixed" | "conj"
         self.total = len(words)
         self.queue = weighted_order(words)
         self.done: set[tuple[str, str]] = set()
@@ -63,13 +59,11 @@ class Session:
 
     @property
     def prompt(self) -> str:
-        w = self.current
-        return w.korean if self.current_dir == "ko→en" else w.english
+        return self.current.ask(self.current_dir)
 
     @property
     def answer(self) -> str:
-        w = self.current
-        return w.english if self.current_dir == "ko→en" else w.korean
+        return self.current.expect(self.current_dir)
 
     def grade(self, correct: bool) -> None:
         w = self.current
