@@ -9,6 +9,7 @@ NiceGUI app for drilling Korean vocab from markdown decks. Public repo, lives in
 - `checking.py`: lenient typed-answer matching. `uv run python checking.py` runs its self-tests.
 - `vocab_io.py`: reads decks, reads/writes stats.
 - `decks/<course>/<name>.md`: tracked. Columns `korean | english | tags | notes` only.
+- `decks/<course>/conjugations.md`: `korean | english | tags | pos | rule | <form>...`, `nan` where a form doesn't exist. Edit via the `conjugate` skill.
 - `stats/<course>/<name>.json`: gitignored, per-user progress.
 
 ## Rules
