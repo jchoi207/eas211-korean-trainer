@@ -103,13 +103,13 @@ def _key(korean: str, english: str) -> str:
     return f"{korean}\t{english}"
 
 
-def _read_stats(path: Path) -> dict[str, dict]:
+def _read_stats(path: Path) -> dict | list:
     if not path.exists():
         return {}
     return json.loads(path.read_text(encoding="utf-8"))
 
 
-def _write_stats(path: Path, stats: dict[str, dict]) -> None:
+def _write_stats(path: Path, stats: dict | list) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     fd, tmp = tempfile.mkstemp(dir=path.parent, prefix=".stats-", suffix=".tmp")
     with os.fdopen(fd, "w", encoding="utf-8") as f:
@@ -172,3 +172,17 @@ def undo_miss(stats: Path, key: tuple[str, str], direction: str, prev_box: int) 
         w.box = min(prev_box + 1, MAX_BOX)
 
     return _update(stats, key, fn)
+
+
+# stars: per Korean word, shared by its vocab rows and its conjugation cards
+
+
+def load_starred(path: Path) -> set[str]:
+    return set(_read_stats(path))
+
+
+def toggle_star(path: Path, korean: str) -> set[str]:
+    """Star or unstar a word. Re-reads the file first so other sessions' writes survive."""
+    starred = load_starred(path) ^ {korean}
+    _write_stats(path, sorted(starred))
+    return starred

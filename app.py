@@ -19,12 +19,13 @@ DECK = DECKS / "eas211" / "vocab.md"
 STATS_FILE = vocab_io.stats_path(DECK, DECKS, STATS)
 CONJ = DECK.parent / "conjugations.md"  # optional, enables Study: Conjugations
 CONJ_STATS = vocab_io.stats_path(CONJ, DECKS, STATS)
+STARRED = STATS_FILE.parent / "starred.json"
 
 DIRECTIONS = {"ko→en": "한 → EN", "en→ko": "EN → 한", "mixed": "Mixed"}
 DIRECTION_HINT = {"ko→en": "Korean → English", "en→ko": "English → Korean"}
 STUDY = {"words": "Words", "conj": "Conjugations"}
 MODES = {"learn": "Learn", "flash": "Flashcards", "type": "Typing"}
-POOLS = {"all": "All", "worst": "Worst"}
+POOLS = {"all": "All", "worst": "Worst", "starred": "Starred"}
 # Score cell tinted red (0) -> amber -> green (100); blank when untested.
 SCORE_CELL = """
 <q-td :props="props" :style="props.value == null ? '' : `background: hsla(${props.value * 1.2}, 75%, 50%, 0.35)`">
@@ -37,8 +38,14 @@ def columns(names: list[str]) -> list[dict]:
     return [{"name": c, "label": c, "field": c, "sortable": True, "align": "left"} for c in names]
 
 
-TABLE_COLUMNS = columns(vocab_io.COLUMNS)
-CONJ_COLUMNS = columns(["korean", "form", "answer", "rule", "correct", "box", "score", "last"])
+TABLE_COLUMNS = columns(["star"] + vocab_io.COLUMNS)
+CONJ_COLUMNS = columns(["star", "korean", "form", "answer", "rule", "correct", "box", "score", "last"])
+STAR_CELL = """
+<q-td :props="props">
+  <q-btn flat dense round size="sm" :icon="props.value ? 'star' : 'star_border'" :color="props.value ? 'amber' : 'grey'"
+         @click="() => $parent.$emit('star', props.row.korean)" />
+</q-td>
+"""
 
 # Emit the input's DOM value on Enter. If the Enter only commits a Hangul
 # syllable (IME still composing), wait for the composition to finish first.
@@ -75,6 +82,7 @@ class Trainer:
         self.mode = "flash"
         self.pool = "all"
         self.worst_n = 20
+        self.starred: set[str] = set()  # Korean words, shared by words and conjugations
         self.s: Session | None = None
         self.learn_words: list | None = None  # Words, or lists of one verb's Cards; set while in learn mode
         self.learn_i = 0
@@ -92,6 +100,7 @@ class Trainer:
         self.learn_words = None
         self.words = vocab_io.load(DECK, STATS_FILE)
         self.cards, self.form_names = conj_io.load(CONJ, CONJ_STATS) if CONJ.exists() else ([], [])
+        self.starred = vocab_io.load_starred(STARRED)
         if not self.cards:
             self.study = "words"
         self.root.clear()
@@ -107,7 +116,7 @@ class Trainer:
             self.options_picker()
             ui.label("Words").classes("text-sm opacity-60 -mb-4")
             with ui.row().classes("items-center gap-3"):
-                ui.toggle(POOLS).bind_value(self, "pool")
+                ui.toggle(POOLS, value=self.pool, on_change=lambda e: self.change("pool", e.value))
                 ui.number(min=1, step=5, precision=0).bind_value(self, "worst_n").bind_visibility_from(
                     self, "pool", value="worst"
                 ).props("dense outlined").classes("w-24")
@@ -121,12 +130,12 @@ class Trainer:
 
     def pool_items(self) -> list:
         """Words, or conjugation cards, matching the current pickers."""
-        if not self.conj:
-            return select(self.words, self.tags)
-        return [
-            c for c in select(self.cards, self.tags)
-            if (not self.forms or c.form in self.forms) and (not self.rules or c.rule in self.rules)
-        ]
+        items = select(self.cards if self.conj else self.words, self.tags)
+        if self.conj:
+            items = [c for c in items if (not self.forms or c.form in self.forms) and (not self.rules or c.rule in self.rules)]
+        if self.pool == "starred":
+            items = [w for w in items if w.korean in self.starred]
+        return items
 
     def change(self, attr: str, value: str):
         setattr(self, attr, value)
@@ -141,12 +150,13 @@ class Trainer:
     def tag_picker(self):
         items = self.cards if self.conj else self.words
         counts = Counter(t for w in {w.korean: w for w in items}.values() for t in w.tags)  # words, not cards
+        self.count_label = ui.label().classes("text-sm opacity-60 -mb-4")
+        self.update_count()
+        self.multi(self.tags, {t: f"{t} · {counts[t]}" for t in sorted(counts)})
+
+    def update_count(self):
         n = len(self.pool_items())
-        ui.label(f"Sets · {n} {'cards' if self.conj else 'words'}").classes("text-sm opacity-60 -mb-4")
-        with ui.row().classes("gap-1"):
-            self.chip("all", not self.tags, lambda: self.clear(self.tags))
-            for t in sorted(counts):
-                self.chip(f"{t} · {counts[t]}", t in self.tags, lambda t=t: self.toggle(self.tags, t))
+        self.count_label.text = f"Sets · {n} {'cards' if self.conj else 'words'}"
 
     @ui.refreshable_method
     def options_picker(self):
@@ -159,10 +169,7 @@ class Trainer:
         rules = sorted({c.rule for c in self.cards})
         for label, chosen, names in (("Forms", self.forms, self.form_names), ("Rules", self.rules, rules)):
             ui.label(label).classes("text-sm opacity-60 -mb-4")
-            with ui.row().classes("gap-1"):
-                self.chip("all", not chosen, lambda chosen=chosen: self.clear(chosen))
-                for x in names:
-                    self.chip(x, x in chosen, lambda chosen=chosen, x=x: self.toggle(chosen, x))
+            self.multi(chosen, {x: x for x in names})
 
     @ui.refreshable_method
     def word_table(self):
@@ -172,6 +179,7 @@ class Trainer:
         rows = [
             {
                 "id": i,
+                "star": w.korean in self.starred,
                 "korean": w.korean,
                 "english": w.english,
                 "tags": " ".join(w.tags),
@@ -183,17 +191,18 @@ class Trainer:
                 "last": w.last,
             }
             # weakest first, untested last
-            for i, w in enumerate(sorted(select(self.words, self.tags), key=lambda w: (w.score is None, w.score or 0)))
+            for i, w in enumerate(sorted(self.pool_items(), key=lambda w: (w.score is None, w.score or 0)))
         ]
         table = ui.table(columns=TABLE_COLUMNS, rows=rows, pagination=0).props("flat dense").classes("w-full")
         table.add_slot("body-cell-score", SCORE_CELL)
+        self.star_cells(table)
         with table.add_slot("top-right"):
             ui.input(placeholder="Search").bind_value(table, "filter").props("dense clearable")
 
     def conj_tables(self):
         cards = sorted(self.pool_items(), key=lambda c: (c.score is None, c.score or 0))
         rows = [
-            {"id": i, "korean": c.korean, "form": c.form, "answer": c.target, "rule": c.rule,
+            {"id": i, "star": c.korean in self.starred, "korean": c.korean, "form": c.form, "answer": c.target, "rule": c.rule,
              "correct": vocab_io.fmt_ratio(c.ok), "box": c.box, "score": c.score, "last": c.last}
             for i, c in enumerate(cards)
         ]
@@ -205,22 +214,50 @@ class Trainer:
                 t.add_slot("body-cell-pct", SCORE_CELL)
         table = ui.table(columns=CONJ_COLUMNS, rows=rows, pagination=0).props("flat dense").classes("w-full")
         table.add_slot("body-cell-score", SCORE_CELL)
+        self.star_cells(table)
         with table.add_slot("top-right"):
             ui.input(placeholder="Search").bind_value(table, "filter").props("dense clearable")
 
-    @staticmethod
-    def chip(text: str, selected: bool, on_click):
-        c = ui.chip(text, selectable=True, selected=selected, on_click=on_click)
-        if not selected:
-            c.props("outline")
+    def multi(self, chosen: set[str], options: dict[str, str]):
+        """Dropdown multi-select over options {value: label}, editing chosen in place. Empty = all."""
+        def shown() -> str:
+            return ", ".join(x for x in options if x in chosen) or "all"
 
-    def toggle(self, chosen: set[str], x: str):
-        chosen ^= {x}
-        self.refresh_pickers()
+        def on_change(e):
+            chosen.clear()
+            chosen.update(e.value or [])
+            sel.props(f'display-value="{shown()}"')
+            self.update_count()  # don't refresh the pickers, that would close the dropdown
+            self.word_table.refresh()
 
-    def clear(self, chosen: set[str]):
-        chosen.clear()
-        self.refresh_pickers()
+        sel = ui.select(options, multiple=True, value=[x for x in options if x in chosen], on_change=on_change)
+        sel.props(f'dense outlined clearable options-dense display-value="{shown()}"').classes("w-full")
+
+    # stars
+
+    def star_cells(self, table):
+        table.add_slot("body-cell-star", STAR_CELL)
+
+        def on_star(e):
+            self.starred = vocab_io.toggle_star(STARRED, e.args)
+            self.update_count()
+            self.word_table.refresh()
+
+        table.on("star", on_star)
+
+    def star_button(self, korean: str):
+        """Star toggle for the word on screen. S on the keyboard does the same."""
+        self.star_korean = korean
+        self.star_btn = ui.button(on_click=self.toggle_star).props("flat round").mark("star")
+        self.paint_star()
+
+    def paint_star(self):
+        on = self.star_korean in self.starred
+        self.star_btn.props(f"icon={'star' if on else 'star_border'} color={'amber' if on else 'grey'}")
+
+    def toggle_star(self):
+        self.starred = vocab_io.toggle_star(STARRED, self.star_korean)
+        self.paint_star()
 
     def start(self, words: list | None = None):
         if words is None:
@@ -262,7 +299,7 @@ class Trainer:
             with ui.row().classes("w-full items-center justify-between no-wrap"):
                 ui.button(icon="arrow_back", on_click=self.show_setup).props("flat round")
                 ui.label(f"{i + 1} / {len(words)}").classes("opacity-70")
-                ui.space()
+                self.star_button(w[0].korean if self.conj else w.korean)
             with ui.card().classes("w-full min-h-64 items-center justify-center gap-3 p-8"):
                 if self.conj:
                     self.learn_conj(w)
@@ -278,7 +315,7 @@ class Trainer:
                 )
                 last = i == len(words) - 1
                 ui.button("Done" if last else "Next  →", on_click=lambda: self.learn_step(1)).classes("flex-1").props("unelevated")
-            ui.label("← → or Space to move").classes("text-xs opacity-50 self-center")
+            ui.label("← → or Space to move, S to star").classes("text-xs opacity-50 self-center")
 
     @staticmethod
     def learn_conj(group: list[conj_io.Card]):
@@ -313,10 +350,10 @@ class Trainer:
                 ui.button(icon="arrow_back", on_click=self.show_setup).props("flat round")
                 retry = f" · {s.pending} to retry" if s.pending else ""
                 ui.label(f"{len(s.done)} / {s.total}{retry}").classes("opacity-70")
-                if self.conj:
-                    ui.space()
-                else:
-                    ui.toggle(DIRECTIONS, value=s.direction, on_change=self.change_direction).props("dense")
+                with ui.row().classes("items-center gap-1 no-wrap"):
+                    if not self.conj:
+                        ui.toggle(DIRECTIONS, value=s.direction, on_change=self.change_direction).props("dense")
+                    self.star_button(s.current.korean)
             with ui.card().classes("w-full min-h-64 items-center justify-center gap-3 p-8") as card:
                 if self.conj:
                     ui.label(s.current.english).classes("text-sm opacity-50")
@@ -333,7 +370,7 @@ class Trainer:
                     ui.button("Missed  ←", on_click=lambda: self.grade_flash(False), color="negative").classes("flex-1").props("unelevated")
                     ui.button("Got it  →", on_click=lambda: self.grade_flash(True), color="positive").classes("flex-1").props("unelevated")
                 self.grade_row.set_visibility(False)
-                ui.label("Space or click to flip").classes("text-xs opacity-50 self-center")
+                ui.label("Space or click to flip, S to star").classes("text-xs opacity-50 self-center")
             else:
                 target = "conjugated form" if self.conj else "English" if s.current_dir == "ko→en" else "Korean"
                 self.input = ui.input(placeholder=f"Type the {target}").props("outlined autofocus").classes("w-full text-xl")
@@ -425,6 +462,10 @@ class Trainer:
     def on_key(self, e):
         if not e.action.keydown or e.action.repeat:
             return
+        on_card = self.learn_words is not None or (self.s is not None and not self.s.finished)
+        if on_card and e.key.code == "KeyS":  # physical key, so it works with a Korean layout too
+            self.toggle_star()
+            return
         if self.learn_words is not None:
             if e.key.arrow_left:
                 self.learn_step(-1)
@@ -482,4 +523,5 @@ if __name__ in {"__main__", "__mp_main__"}:
     STATS_FILE = vocab_io.stats_path(DECK, DECKS, STATS)
     CONJ = DECK.parent / "conjugations.md"
     CONJ_STATS = vocab_io.stats_path(CONJ, DECKS, STATS)
+    STARRED = STATS_FILE.parent / "starred.json"
     ui.run(title="Korean vocab", dark=None, reload=False, port=args.port)
