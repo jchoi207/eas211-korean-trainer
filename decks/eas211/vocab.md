@@ -73,7 +73,7 @@ tags: [eas211, vocab]
 | 음식 | Food | l03-c1 |  |
 | 먹다 | To eat | l03-c1 |  |
 | 토론토 | Toronto | l03-c1 |  |
-| 있다 | To exist | l03-c1 | also: to have |
+| 있다 | To exist/to have | l03-c1 l04-c2 |  |
 | 한인 타운 | Koreatown | l03-c1 |  |
 | 밴쿠버 | Vancouver | l03-c1 |  |
 | 몬트리올 | Montreal | l03-c1 |  |
@@ -97,8 +97,8 @@ tags: [eas211, vocab]
 | 보내다 | To send | l03-c1 |  |
 | 나쁘다 | To be bad | l03-c1 |  |
 | 우유 | Milk | l03-c1 |  |
-| 쓰다 | To write | l03-c1 |  |
-| 없다 | Not to exist | l03-c1 | also: not to have |
+| 쓰다 | To write/to put up (an umbrella) | l03-c1 l04-c2 | 써요 |
+| 없다 | Not to exist/not to have | l03-c1 l04-c2 |  |
 | 공원 | Park | l03-c1 |  |
 | 운동하다 | To exercise | l03-c1 |  |
 | 백화점 | Department store | l03-c1 |  |
@@ -202,3 +202,49 @@ tags: [eas211, vocab]
 | 만두 | Dumpling | l04-c1 |  |
 | 때 | During | l04-c1 | also: time, when |
 | 노래 | Song | l04-c1 | 노래하다 = to sing |
+| 종업원 | Employee | l04-c2 |  |
+| 어서 오세요 | Welcome | l04-c2 |  |
+| 자리 | Seat | l04-c2 |  |
+| 이쪽으로 오세요 | Come this way | l04-c2 |  |
+| 불고기 | Korean barbecued beef | l04-c2 |  |
+| 채식주의자 | Vegetarian | l04-c2 |  |
+| 여기 | Here | l04-c2 |  |
+| 하나 | One | l04-c2 |  |
+| 갈비 | Ribs | l04-c2 |  |
+| 삼겹살 | Pork belly | l04-c2 |  |
+| 일하다 | To work | l04-c2 |  |
+| 아프다 | To be sick | l04-c2 | 아파요 |
+| 여동생 | Female younger sibling | l04-c2 |  |
+| 남동생 | Male younger sibling | l04-c2 |  |
+| 알다 | To know | l04-c2 |  |
+| 모르다 | Not to know | l04-c2 | 몰라요 |
+| 비가 오다 | It rains | l04-c2 |  |
+| 바쁘다 | To be busy | l04-c2 | 바빠요 |
+| 너무 | Too much | l04-c2 |  |
+| 시험 | Test | l04-c2 |  |
+| 햄버거 | Hamburger | l04-c2 |  |
+| 파티 | Party | l04-c2 |  |
+| 토요일 | Saturday | l04-c2 |  |
+| 컴퓨터 | Computer | l04-c2 |  |
+| 중국어 | The Chinese language | l04-c2 |  |
+| 소설책 | Novel | l04-c2 |  |
+| 라디오 | Radio | l04-c2 |  |
+| 병원 | Hospital | l04-c2 |  |
+| 우산 | Umbrella | l04-c2 |  |
+| 내일 | Tomorrow | l04-c2 |  |
+| 머리 | Head | l04-c2 |  |
+| 기분 | Mood | l04-c2 |  |
+| 된장찌개 | Bean paste stew | l04-c2 |  |
+| 주문하다 | To order | l04-c2 |  |
+| 오렌지 주스 | Orange juice | l04-c2 |  |
+| 쿠키 | Cookies | l04-c2 |  |
+| 버블티 | Bubble tea | l04-c2 |  |
+| 뭐 드릴까요? | What can I get for you? | l04-c2 |  |
+| 좋아하다 | To like | l04-c2 |  |
+| 요즘 | Recently | l04-c2 |  |
+| 그런데 | By the way/but | l04-c2 |  |
+| 학생증 | Student ID | l04-c2 |  |
+| 왜 | Why | l04-c2 |  |
+| 시간 | Time | l04-c2 |  |
+| 극장 | Theatre | l04-c2 |  |
+| 영화 | Movie | l04-c2 |  |

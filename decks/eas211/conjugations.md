@@ -14,7 +14,7 @@ tags: [eas211, vocab, conjugation]
 | 장 보다 | To do grocery shopping | l03-c1 | verb | vowel stem | 장 봐요 | 장 보지요 | 장 보러 가요 | 장 보고 싶어요 |
 | 가다 | To go | l03-c1 | verb | vowel stem | 가요 | 가지요 | nan | 가고 싶어요 |
 | 먹다 | To eat | l03-c1 | verb | 받침 | 먹어요 | 먹지요 | 먹으러 가요 | 먹고 싶어요 |
-| 있다 | To exist | l03-c1 | verb | 받침 | 있어요 | 있지요 | nan | 있고 싶어요 |
+| 있다 | To exist/to have | l03-c1 l04-c2 | verb | 받침 | 있어요 | 있지요 | nan | 있고 싶어요 |
 | 맛있다 | To be delicious | l03-c1 | adj | 받침 | 맛있어요 | 맛있지요 | nan | nan |
 | 앉다 | To sit | l03-c1 | verb | 받침 | 앉아요 | 앉지요 | 앉으러 가요 | 앉고 싶어요 |
 | 많다 | To be many | l03-c1 | adj | 받침 | 많아요 | 많지요 | nan | nan |
@@ -30,8 +30,8 @@ tags: [eas211, vocab, conjugation]
 | 자다 | To sleep | l03-c1 | verb | vowel stem | 자요 | 자지요 | 자러 가요 | 자고 싶어요 |
 | 보내다 | To send | l03-c1 | verb | vowel stem | 보내요 | 보내지요 | 보내러 가요 | 보내고 싶어요 |
 | 나쁘다 | To be bad | l03-c1 | adj | ㅡ drop | 나빠요 | 나쁘지요 | nan | nan |
-| 쓰다 | To write | l03-c1 | verb | ㅡ drop | 써요 | 쓰지요 | 쓰러 가요 | 쓰고 싶어요 |
-| 없다 | Not to exist | l03-c1 | adj | 받침 | 없어요 | 없지요 | nan | nan |
+| 쓰다 | To write/to put up (an umbrella) | l03-c1 l04-c2 | verb | ㅡ drop | 써요 | 쓰지요 | 쓰러 가요 | 쓰고 싶어요 |
+| 없다 | Not to exist/not to have | l03-c1 l04-c2 | adj | 받침 | 없어요 | 없지요 | nan | nan |
 | 운동하다 | To exercise | l03-c1 | verb | 하다 | 운동해요 | 운동하지요 | 운동하러 가요 | 운동하고 싶어요 |
 | 읽다 | To read | l03-c1 | verb | 받침 | 읽어요 | 읽지요 | 읽으러 가요 | 읽고 싶어요 |
 | 계시다 | To stay (honorific form) | l03-c2 | verb | honorific | 계세요 | 계시지요 | nan | nan |
@@ -54,3 +54,11 @@ tags: [eas211, vocab, conjugation]
 | 사진 찍다 | To take a picture | l04-c1 | verb | 받침 | 사진 찍어요 | 사진 찍지요 | 사진 찍으러 가요 | 사진 찍고 싶어요 |
 | 팔다 | To sell | l04-c1 | verb | ㄹ stem | 팔아요 | 팔지요 | 팔러 가요 | 팔고 싶어요 |
 | 인기가 많다 | To be popular | l04-c1 | adj | 받침 | 인기가 많아요 | 인기가 많지요 | nan | nan |
+| 일하다 | To work | l04-c2 | verb | 하다 | 일해요 | 일하지요 | 일하러 가요 | 일하고 싶어요 |
+| 아프다 | To be sick | l04-c2 | adj | ㅡ drop | 아파요 | 아프지요 | nan | nan |
+| 알다 | To know | l04-c2 | verb | ㄹ stem | 알아요 | 알지요 | nan | 알고 싶어요 |
+| 모르다 | Not to know | l04-c2 | verb | 르 irregular | 몰라요 | 모르지요 | nan | 모르고 싶어요 |
+| 비가 오다 | It rains | l04-c2 | verb | vowel stem | 비가 와요 | 비가 오지요 | nan | nan |
+| 바쁘다 | To be busy | l04-c2 | adj | ㅡ drop | 바빠요 | 바쁘지요 | nan | nan |
+| 주문하다 | To order | l04-c2 | verb | 하다 | 주문해요 | 주문하지요 | 주문하러 가요 | 주문하고 싶어요 |
+| 좋아하다 | To like | l04-c2 | verb | 하다 | 좋아해요 | 좋아하지요 | nan | 좋아하고 싶어요 |
