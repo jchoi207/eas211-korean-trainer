@@ -23,7 +23,7 @@ One markdown table per deck. `tags` are space-separated and become the sets you 
 
 ## Conjugations
 
-If the deck folder has a `conjugations.md`, the app gets a Conjugate mode: you see the dictionary form and a target form (e.g. `춥다` + `아/어요`) and type the result. Pick forms and rules (ㅂ irregular, ㄹ stem, ...) to narrow the drill. The word list shows your accuracy per rule and per form.
+If the deck folder has a `conjugations.md`, you can switch Study to Conjugations. Learn shows one verb with all its forms, grouped by rule. Flashcards and Typing show the dictionary form and a target form (e.g. `춥다` + `아/어요`). Pick forms and rules (ㅂ irregular, ㄹ stem, ...) to narrow it down. The word list shows your accuracy per rule and per form.
 
 ```
 | korean | english | tags | pos | rule | 아/어요 | 지요 | (으)러 가요 | 고 싶어요 |

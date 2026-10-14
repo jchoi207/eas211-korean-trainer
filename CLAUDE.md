@@ -4,7 +4,7 @@ NiceGUI app for drilling Korean vocab from markdown decks. Public repo, lives in
 
 ## Layout
 
-- `app.py`: UI (setup, learn, flashcards, typing). `--deck`, `--port`.
+- `app.py`: UI. Setup picks Study (words | conjugations) then Mode (learn | flashcards | typing). `--deck`, `--port`.
 - `session.py`: word selection, weighted order, requeueing misses.
 - `checking.py`: lenient typed-answer matching. `uv run python checking.py` runs its self-tests.
 - `vocab_io.py`: reads decks, reads/writes stats.

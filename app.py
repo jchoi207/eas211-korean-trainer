@@ -17,12 +17,13 @@ DECKS = ROOT / "decks"
 STATS = ROOT / "stats"
 DECK = DECKS / "eas211" / "vocab.md"
 STATS_FILE = vocab_io.stats_path(DECK, DECKS, STATS)
-CONJ = DECK.parent / "conjugations.md"  # optional, enables Conjugate mode
+CONJ = DECK.parent / "conjugations.md"  # optional, enables Study: Conjugations
 CONJ_STATS = vocab_io.stats_path(CONJ, DECKS, STATS)
 
 DIRECTIONS = {"ko→en": "한 → EN", "en→ko": "EN → 한", "mixed": "Mixed"}
 DIRECTION_HINT = {"ko→en": "Korean → English", "en→ko": "English → Korean"}
-MODES = {"learn": "Learn", "flash": "Flashcards", "type": "Typing", "conj": "Conjugate"}
+STUDY = {"words": "Words", "conj": "Conjugations"}
+MODES = {"learn": "Learn", "flash": "Flashcards", "type": "Typing"}
 POOLS = {"all": "All", "worst": "Worst"}
 # Score cell tinted red (0) -> amber -> green (100); blank when untested.
 SCORE_CELL = """
@@ -67,14 +68,15 @@ def check_target(item) -> str | None:
 class Trainer:
     def __init__(self):
         self.tags: set[str] = set()
-        self.forms: set[str] = set()  # conjugate mode filters, empty = all
+        self.forms: set[str] = set()  # conjugation filters, empty = all
         self.rules: set[str] = set()
+        self.study = "words"
         self.direction = "ko→en"
         self.mode = "flash"
         self.pool = "all"
         self.worst_n = 20
         self.s: Session | None = None
-        self.learn_words: list[vocab_io.Word] | None = None  # set while in learn mode
+        self.learn_words: list | None = None  # Words, or lists of one verb's Cards; set while in learn mode
         self.learn_i = 0
         self.revealed = False  # card flipped, or typed answer checked
         self.prev_box = 0
@@ -90,18 +92,19 @@ class Trainer:
         self.learn_words = None
         self.words = vocab_io.load(DECK, STATS_FILE)
         self.cards, self.form_names = conj_io.load(CONJ, CONJ_STATS) if CONJ.exists() else ([], [])
-        modes = MODES if self.cards else {k: v for k, v in MODES.items() if k != "conj"}
+        if not self.cards:
+            self.study = "words"
         self.root.clear()
         self.root.classes(remove="max-w-xl", add="max-w-4xl")  # room for the word table
         with self.root:
             ui.label("Korean vocab").classes("text-2xl font-semibold")
+            if self.cards:
+                ui.label("Study").classes("text-sm opacity-60 -mb-4")
+                ui.toggle(STUDY, value=self.study, on_change=lambda e: self.change("study", e.value))
             ui.label("Mode").classes("text-sm opacity-60 -mb-4")
-            ui.toggle(modes, value=self.mode, on_change=self.change_mode)
+            ui.toggle(MODES, value=self.mode, on_change=lambda e: self.change("mode", e.value))
             self.tag_picker()
-            self.conj_picker()
-            with ui.column().classes("gap-6").bind_visibility_from(self, "mode", backward=lambda m: m in ("flash", "type")):
-                ui.label("Direction").classes("text-sm opacity-60 -mb-4")
-                ui.toggle(DIRECTIONS).bind_value(self, "direction")
+            self.options_picker()
             ui.label("Words").classes("text-sm opacity-60 -mb-4")
             with ui.row().classes("items-center gap-3"):
                 ui.toggle(POOLS).bind_value(self, "pool")
@@ -114,7 +117,7 @@ class Trainer:
 
     @property
     def conj(self) -> bool:
-        return self.mode == "conj"
+        return self.study == "conj"
 
     def pool_items(self) -> list:
         """Words, or conjugation cards, matching the current pickers."""
@@ -125,13 +128,13 @@ class Trainer:
             if (not self.forms or c.form in self.forms) and (not self.rules or c.rule in self.rules)
         ]
 
-    def change_mode(self, e):
-        self.mode = e.value
+    def change(self, attr: str, value: str):
+        setattr(self, attr, value)
         self.refresh_pickers()
 
     def refresh_pickers(self):
         self.tag_picker.refresh()
-        self.conj_picker.refresh()
+        self.options_picker.refresh()
         self.word_table.refresh()
 
     @ui.refreshable_method
@@ -146,8 +149,12 @@ class Trainer:
                 self.chip(f"{t} · {counts[t]}", t in self.tags, lambda t=t: self.toggle(self.tags, t))
 
     @ui.refreshable_method
-    def conj_picker(self):
+    def options_picker(self):
+        """Forms and rules for conjugations, direction for words (except in learn mode)."""
         if not self.conj:
+            if self.mode != "learn":
+                ui.label("Direction").classes("text-sm opacity-60 -mb-4")
+                ui.toggle(DIRECTIONS).bind_value(self, "direction")
             return
         rules = sorted({c.rule for c in self.cards})
         for label, chosen, names in (("Forms", self.forms, self.form_names), ("Rules", self.rules, rules)):
@@ -227,13 +234,24 @@ class Trainer:
             ui.notify("Nothing in the selected sets", type="warning")
             return
         if self.mode == "learn":
-            self.learn_words, self.learn_i = words, 0
+            self.learn_words, self.learn_i = (self.learn_groups(words) if self.conj else words), 0
             self.show_learn()
             return
         self.s = Session(words, "conj" if self.conj else self.direction)
         self.show_card()
 
-    # learn mode: browse pairs in file order, nothing graded or saved
+    def learn_groups(self, cards: list[conj_io.Card]) -> list[list[conj_io.Card]]:
+        """One group per verb, ordered by rule (table order of first appearance), then table order."""
+        rank = {}
+        for c in self.cards:
+            rank.setdefault(c.rule, len(rank))
+        order = {c.korean: i for i, c in reversed(list(enumerate(self.cards)))}
+        groups: dict[str, list[conj_io.Card]] = {}
+        for c in sorted(cards, key=lambda c: (order[c.korean], self.form_names.index(c.form))):
+            groups.setdefault(c.korean, []).append(c)
+        return sorted(groups.values(), key=lambda g: (rank[g[0].rule], order[g[0].korean]))
+
+    # learn mode: browse in file order (conjugations: one verb with its forms), nothing graded or saved
 
     def show_learn(self):
         words, i = self.learn_words, self.learn_i
@@ -246,11 +264,14 @@ class Trainer:
                 ui.label(f"{i + 1} / {len(words)}").classes("opacity-70")
                 ui.space()
             with ui.card().classes("w-full min-h-64 items-center justify-center gap-3 p-8"):
-                with ui.row().classes("w-full items-center justify-around gap-8"):
-                    ui.label(w.korean).classes("text-4xl text-center leading-tight")
-                    ui.label(w.english).classes("text-2xl text-center opacity-80")
-                if w.notes:
-                    ui.label(w.notes).classes("text-sm opacity-60 text-center")
+                if self.conj:
+                    self.learn_conj(w)
+                else:
+                    with ui.row().classes("w-full items-center justify-around gap-8"):
+                        ui.label(w.korean).classes("text-4xl text-center leading-tight")
+                        ui.label(w.english).classes("text-2xl text-center opacity-80")
+                    if w.notes:
+                        ui.label(w.notes).classes("text-sm opacity-60 text-center")
             with ui.row().classes("w-full gap-3 no-wrap"):
                 ui.button("←  Prev", on_click=lambda: self.learn_step(-1)).classes("flex-1").props(
                     "outline" + (" disable" if i == 0 else "")
@@ -258,6 +279,16 @@ class Trainer:
                 last = i == len(words) - 1
                 ui.button("Done" if last else "Next  →", on_click=lambda: self.learn_step(1)).classes("flex-1").props("unelevated")
             ui.label("← → or Space to move").classes("text-xs opacity-50 self-center")
+
+    @staticmethod
+    def learn_conj(group: list[conj_io.Card]):
+        c = group[0]
+        ui.label(c.korean).classes("text-4xl text-center leading-tight")
+        ui.label(f"{c.english} · {c.rule}").classes("text-sm opacity-60 text-center")
+        with ui.grid(columns=2).classes("gap-x-8 gap-y-2 mt-4 items-baseline"):
+            for c in group:
+                ui.label(c.form).classes("text-sm opacity-60 text-right")
+                ui.label(c.target).classes("text-2xl")
 
     def learn_step(self, d: int):
         i = self.learn_i + d
