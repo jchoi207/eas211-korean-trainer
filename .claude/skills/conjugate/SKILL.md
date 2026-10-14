@@ -39,6 +39,7 @@ Grammatical but context-dependent forms (살러 가요) stay filled. Flag them t
 - If Wiktionary lacks the word, ask Jonathan to check 표준국어대사전 (stdict.korean.go.kr, entry page shows 활용 like `[추우니, 추워]`). Its search results page doesn't show 활용, so it can't be fetched directly.
 - Optional second opinion: KoParadigm (`pip install koparadigm`, takes the stem, e.g. `춥`). Known wrong: ㄹ stem + 러 (gives 사러 for 살다, should be 살러), honorifics (계시어요 vs 계세요), and its verb/adjective labels. Never copy its output without checking.
 - Never guess. If unsure, leave the cell blank and ask.
+- Run `uv run python conj_io.py`. It must print `ok` (no duplicate rows, every row matches its vocab row).
 
 ## Rules reference (forms learned so far)
 

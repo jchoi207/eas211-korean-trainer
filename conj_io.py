@@ -5,11 +5,14 @@ after `rule` is a form and `nan` marks a form that doesn't exist. One card per
 (word, form). Stats are keyed by korean + form.
 """
 
+import sys
 from dataclasses import dataclass, field
 from datetime import date
 from pathlib import Path
 
-from vocab_io import MAX_BOX, _cells, _read_stats, _write_stats
+from collections import Counter
+
+from vocab_io import MAX_BOX, Word, _cells, _read_stats, _write_stats
 
 FIXED = ["korean", "english", "tags", "pos", "rule"]
 NAN = "nan"
@@ -136,3 +139,29 @@ def summary(cards: list[Card], attr: str) -> list[dict]:
         right, n = sum(c.ok[0] for c in cs), sum(c.ok[1] for c in cs)
         rows.append({attr: name, "cards": len(cs), "correct": f"{right}/{n}" if n else "", "pct": round(100 * right / n) if n else None})
     return sorted(rows, key=lambda r: (r["pct"] is None, r["pct"] or 0))
+
+
+def problems(words: list[Word], cards: list[Card]) -> list[str]:
+    """Deck collisions: one row per Korean word in each table, and conjugation rows matching
+    their vocab row. Stats, stars and learn grouping all rely on this."""
+    out = [f"vocab: {k} has {n} rows" for k, n in Counter(w.korean for w in words).items() if n > 1]
+    dup = {k for (k, _), n in Counter(c.key for c in cards).items() if n > 1}
+    out += [f"conjugations: {k} has more than one row" for k in dup]
+    vocab = {w.korean: w for w in words}
+    for c in {c.korean: c for c in cards}.values():
+        w = vocab.get(c.korean)
+        if w is None:
+            out.append(f"conjugations: {c.korean} isn't in vocab")
+        elif (c.english, c.tags) != (w.english, w.tags):
+            out.append(f"conjugations: {c.korean} is '{c.english}' {c.tags}, vocab has '{w.english}' {w.tags}")
+    return out
+
+
+if __name__ == "__main__":
+    # uv run python conj_io.py [decks/eas211]: list deck collisions
+    from vocab_io import load_deck
+
+    d = Path(sys.argv[1] if len(sys.argv) > 1 else "decks/eas211")
+    found = problems(load_deck(d / "vocab.md"), load_table(d / "conjugations.md")[0])
+    print("\n".join(found) or "ok")
+    sys.exit(bool(found))

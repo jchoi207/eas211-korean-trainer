@@ -107,6 +107,8 @@ class Trainer:
         self.root.classes(remove="max-w-xl", add="max-w-4xl")  # room for the word table
         with self.root:
             ui.label("Korean vocab").classes("text-2xl font-semibold")
+            if found := conj_io.problems(self.words, self.cards):
+                ui.label("Deck collisions (python conj_io.py): " + "; ".join(found)).classes("text-sm text-negative")
             if self.cards:
                 ui.label("Study").classes("text-sm opacity-60 -mb-4")
                 ui.toggle(STUDY, value=self.study, on_change=lambda e: self.change("study", e.value))
