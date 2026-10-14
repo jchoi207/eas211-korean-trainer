@@ -49,7 +49,6 @@ tags: [eas211, vocab]
 | 안녕하세요 | hello | greetings |  |
 | 안녕히 계세요 | goodbye (to the person staying) | greetings |  |
 | 안녕히 가세요 | goodbye (to the person leaving) | greetings |  |
-| 실례합니다 | excuse me | greetings |  |
 | 감사합니다 / 고맙습니다 | thank you | greetings |  |
 | 미안합니다 / 죄송합니다 | I am sorry | greetings |  |
 | 늦어서 죄송합니다 | I am sorry for being late | greetings |  |
@@ -115,7 +114,7 @@ tags: [eas211, vocab]
 | 뉴욕 | New York | l03-c1 |  |
 | 책 | Book | l03-c1 |  |
 | 읽다 | To read | l03-c1 |  |
-| 실례합니다 | Excuse me | l03-c2 |  |
+| 실례합니다 | Excuse me | greetings l03-c2 |  |
 | 신발 박물관 | Shoe Museum | l03-c2 |  |
 | 옆 | Beside | l03-c2 | also: next to |
 | 지하철 | Subway | l03-c2 |  |
