@@ -31,6 +31,10 @@ If the deck folder has a `conjugations.md`, you can switch Study to Conjugations
 
 Every column after `rule` is a form. `nan` = the form doesn't exist for that word. 고 싶어해요 is derived from 고 싶어요, and typing accepts 죠 for 지요.
 
+## Numbers
+
+Switch Study to Numbers for Sino-Korean numbers (0 to 99,999,999). Pick a range and a direction (123 → 한, 한 → 123, or mixed), then type the answer. Nothing is saved.
+
 ## Stats
 
 `decks/<course>/<name>.md` saves to `stats/<course>/<name>.json`, keyed by korean + english. Editing tags or notes keeps a word's history. Editing the korean or english resets it.

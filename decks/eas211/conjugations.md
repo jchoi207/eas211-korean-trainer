@@ -62,3 +62,5 @@ tags: [eas211, vocab, conjugation]
 | 바쁘다 | To be busy | l04-c2 | adj | ㅡ drop | 바빠요 | 바쁘지요 | nan | nan |
 | 주문하다 | To order | l04-c2 | verb | 하다 | 주문해요 | 주문하지요 | 주문하러 가요 | 주문하고 싶어요 |
 | 좋아하다 | To like | l04-c2 | verb | 하다 | 좋아해요 | 좋아하지요 | nan | 좋아하고 싶어요 |
+| 수업을 듣다 | To take a class | l05-c2 | verb | ㄷ irregular | 수업을 들어요 | 수업을 듣지요 | 수업을 들으러 가요 | 수업을 듣고 싶어요 |
+| 입다 | To wear | l05-c2 | verb | 받침 | 입어요 | 입지요 | 입으러 가요 | 입고 싶어요 |

@@ -223,7 +223,7 @@ tags: [eas211, vocab]
 | 시험 | Test | l04-c2 |  |
 | 햄버거 | Hamburger | l04-c2 |  |
 | 파티 | Party | l04-c2 |  |
-| 토요일 | Saturday | l04-c2 |  |
+| 토요일 | Saturday | l04-c2 l05-c1 |  |
 | 컴퓨터 | Computer | l04-c2 |  |
 | 중국어 | The Chinese language | l04-c2 |  |
 | 소설책 | Novel | l04-c2 |  |
@@ -247,3 +247,61 @@ tags: [eas211, vocab]
 | 시간 | Time | l04-c2 |  |
 | 극장 | Theatre | l04-c2 |  |
 | 영화 | Movie | l04-c2 |  |
+| 이번 | This time | l05-c1 |  |
+| 세일 | Sale | l05-c1 |  |
+| 전화번호 | Phone number | l05-c1 |  |
+| 전화번호가 뭐예요? | What's your phone number? | l05-c1 |  |
+| 한테 | To (someone) | l05-c1 |  |
+| 요일 | Days of the week | l05-c1 |  |
+| 월요일 | Monday | l05-c1 |  |
+| 화요일 | Tuesday | l05-c1 |  |
+| 수요일 | Wednesday | l05-c1 |  |
+| 목요일 | Thursday | l05-c1 |  |
+| 금요일 | Friday | l05-c1 |  |
+| 일요일 | Sunday | l05-c1 |  |
+| 문구점 | Stationery store | l05-c1 |  |
+| 얼마예요? | How much is it? | l05-c1 |  |
+| 오늘이 며칠이에요? | What's the date today? | l05-c1 |  |
+| 9월 | September | l05-c1 |  |
+| 일 | Day | l05-c1 |  |
+| 크리스마스 | Christmas | l05-c1 |  |
+| 언제 | When | l05-c1 |  |
+| 내년 | Next year | l05-c1 |  |
+| 작년 | Last year | l05-c1 | Pronounced [장년] |
+| 주유소 | Gas station | l05-c1 |  |
+| 어제 | Yesterday | l05-c1 |  |
+| 밥 | Cooked rice, meal | l05-c1 |  |
+| 아르바이트 | Part-time job | l05-c1 |  |
+| 생일 | Birthday | l05-c1 |  |
+| 제 | My (humble form) | l05-c1 |  |
+| 오전 | a.m. | l05-c1 |  |
+| 열한 시 | 11 o'clock | l05-c1 |  |
+| 모자 | Hat/cap | l05-c1 |  |
+| 무엇 (뭐) | What | l05-c1 |  |
+| 점원 | Clerk | l05-c2 |  |
+| 교과서 | Textbook | l05-c2 |  |
+| 수업을 듣다 | To take a class | l05-c2 |  |
+| 알겠습니다. | I see. | l05-c2 |  |
+| 권 | Counting unit for books | l05-c2 |  |
+| -에 | Per | l05-c2 |  |
+| 다시 올게요. | I'll be back | l05-c2 |  |
+| 커피 | Coffee | l05-c2 |  |
+| 잔 | Counting unit for beverage | l05-c2 |  |
+| 오후 | p.m. | l05-c2 |  |
+| 오빠 | Older brother for female | l05-c2 |  |
+| 더 | More | l05-c2 |  |
+| 사탕 | Candy | l05-c2 |  |
+| 강아지 | Puppy | l05-c2 |  |
+| 차 | Car | l05-c2 |  |
+| 식구 | Family | l05-c2 |  |
+| 지우개 | Eraser | l05-c2 |  |
+| 모두 | Altogether | l05-c2 |  |
+| 바지 | Pants | l05-c2 |  |
+| 아이스하키 | Ice hockey | l05-c2 |  |
+| 경기장 | Rink, stadium | l05-c2 |  |
+| 티켓 | Ticket | l05-c2 |  |
+| 똑같은 | Same | l05-c2 |  |
+| 티셔츠 | T-shirt | l05-c2 |  |
+| 입다 | To wear | l05-c2 |  |
+| 인터넷 | Internet | l05-c2 |  |
+| 필통 | Pencil case | l05-c2 |  |

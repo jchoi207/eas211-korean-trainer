@@ -1,6 +1,7 @@
 """Korean vocab trainer. Run: uv run app.py [--deck path/to/deck.md]"""
 
 import argparse
+import random
 import time
 from collections import Counter
 from pathlib import Path
@@ -11,6 +12,7 @@ import conj_io
 import vocab_io
 from checking import check
 from session import Session, select, worst
+from sino import MAX as NUM_MAX, sino
 
 ROOT = Path(__file__).resolve().parent
 DECKS = ROOT / "decks"
@@ -23,7 +25,8 @@ STARRED = STATS_FILE.parent / "starred.json"
 
 DIRECTIONS = {"ko→en": "한 → EN", "en→ko": "EN → 한", "mixed": "Mixed"}
 DIRECTION_HINT = {"ko→en": "Korean → English", "en→ko": "English → Korean"}
-STUDY = {"words": "Words", "conj": "Conjugations"}
+STUDY = {"words": "Words", "conj": "Conjugations", "numbers": "Numbers"}
+NUM_DIRECTIONS = {"num→ko": "123 → 한", "ko→num": "한 → 123", "mixed": "Mixed"}
 MODES = {"learn": "Learn", "flash": "Flashcards", "type": "Typing"}
 POOLS = {"all": "All", "worst": "Worst", "starred": "Starred"}
 # Score cell tinted red (0) -> amber -> green (100); blank when untested.
@@ -82,6 +85,11 @@ class Trainer:
         self.mode = "flash"
         self.pool = "all"
         self.worst_n = 20
+        self.num_min, self.num_max = 0, 100
+        self.num_dir = "num→ko"
+        self.num_q: int | None = None  # number on screen in numbers study
+        self.num_cur = "num→ko"
+        self.num_hits = self.num_tries = 0
         self.starred: set[str] = set()  # Korean words, shared by words and conjugations
         self.s: Session | None = None
         self.learn_words: list | None = None  # Words, or lists of one verb's Cards; set while in learn mode
@@ -98,10 +106,11 @@ class Trainer:
     def show_setup(self):
         self.s = None
         self.learn_words = None
+        self.num_q = None
         self.words = vocab_io.load(DECK, STATS_FILE)
         self.cards, self.form_names = conj_io.load(CONJ, CONJ_STATS) if CONJ.exists() else ([], [])
         self.starred = vocab_io.load_starred(STARRED)
-        if not self.cards:
+        if not self.cards and self.study == "conj":
             self.study = "words"
         self.root.clear()
         self.root.classes(remove="max-w-xl", add="max-w-4xl")  # room for the word table
@@ -109,9 +118,12 @@ class Trainer:
             ui.label("Korean vocab").classes("text-2xl font-semibold")
             if found := conj_io.problems(self.words, self.cards):
                 ui.label("Deck collisions (python conj_io.py): " + "; ".join(found)).classes("text-sm text-negative")
-            if self.cards:
-                ui.label("Study").classes("text-sm opacity-60 -mb-4")
-                ui.toggle(STUDY, value=self.study, on_change=lambda e: self.change("study", e.value))
+            ui.label("Study").classes("text-sm opacity-60 -mb-4")
+            study = {k: v for k, v in STUDY.items() if k != "conj" or self.cards}
+            ui.toggle(study, value=self.study, on_change=self.change_study)
+            if self.study == "numbers":
+                self.numbers_setup()
+                return
             ui.label("Mode").classes("text-sm opacity-60 -mb-4")
             ui.toggle(MODES, value=self.mode, on_change=lambda e: self.change("mode", e.value))
             self.tag_picker()
@@ -125,6 +137,21 @@ class Trainer:
             ui.button("Start", on_click=lambda: self.start()).classes("w-full").props("unelevated size=lg")
             with ui.expansion("Word list").classes("w-full"):
                 self.word_table()
+
+    def change_study(self, e):
+        self.study = e.value
+        self.show_setup()
+
+    def numbers_setup(self):
+        ui.label("Direction").classes("text-sm opacity-60 -mb-4")
+        ui.toggle(NUM_DIRECTIONS).bind_value(self, "num_dir")
+        ui.label("Range (Sino-Korean)").classes("text-sm opacity-60 -mb-4")
+        with ui.row().classes("items-center gap-3"):
+            for label, attr in (("From", "num_min"), ("To", "num_max")):
+                ui.number(label=label, min=0, max=NUM_MAX, step=10, precision=0).bind_value(self, attr).props(
+                    "dense outlined"
+                ).classes("w-36")
+        ui.button("Start", on_click=self.start_numbers).classes("w-full").props("unelevated size=lg")
 
     @property
     def conj(self) -> bool:
@@ -468,6 +495,10 @@ class Trainer:
         if on_card and e.key.code == "KeyS":  # physical key, so it works with a Korean layout too
             self.toggle_star()
             return
+        if self.num_q is not None:
+            if e.key.enter and self.revealed:
+                self.on_number_enter(None)
+            return
         if self.learn_words is not None:
             if e.key.arrow_left:
                 self.learn_step(-1)
@@ -485,6 +516,64 @@ class Trainer:
                 self.grade_flash(True)
         elif e.key.enter and self.revealed:
             self.on_enter(None)
+
+    # numbers: random integers in a range, typed both ways, nothing saved
+
+    def start_numbers(self):
+        lo, hi = int(self.num_min or 0), int(self.num_max or 0)
+        if lo > hi:
+            ui.notify("From is above To", type="warning")
+            return
+        self.num_hits = self.num_tries = 0
+        self.next_number()
+
+    def next_number(self):
+        self.num_q = random.randint(int(self.num_min or 0), int(self.num_max or 0))
+        d = self.num_dir
+        self.num_cur = random.choice(["num→ko", "ko→num"]) if d == "mixed" else d
+        self.show_number()
+
+    def show_number(self):
+        n, to_ko = self.num_q, self.num_cur == "num→ko"
+        self.revealed = False
+        self.root.clear()
+        self.root.classes(remove="max-w-4xl", add="max-w-xl")
+        with self.root:
+            with ui.row().classes("w-full items-center justify-between no-wrap"):
+                ui.button(icon="arrow_back", on_click=self.show_setup).props("flat round")
+                ui.label(f"{self.num_hits} / {self.num_tries}").classes("opacity-70")
+            with ui.card().classes("w-full min-h-64 items-center justify-center gap-3 p-8"):
+                ui.label(f"{n:,}" if to_ko else sino(n)).classes("text-5xl text-center leading-tight")
+                self.back = ui.column().classes("items-center gap-1")
+            self.input = ui.input(placeholder="Type the Korean" if to_ko else "Type the number")
+            self.input.props("outlined autofocus").classes("w-full text-xl")
+            self.input.on("keydown.enter", lambda e: self.on_number_enter(e.args), js_handler=ENTER_JS)
+            self.feedback = ui.column().classes("w-full items-center gap-2")
+
+    def on_number_enter(self, value):
+        now = time.monotonic()
+        if now - self.last_enter < 0.3:  # IME can fire a second Enter
+            return
+        self.last_enter = now
+        if self.revealed:
+            self.next_number()
+            return
+        self.revealed = True
+        n, to_ko = self.num_q, self.num_cur == "num→ko"
+        answer = (value or "").strip()
+        if to_ko:
+            correct = check(answer, "영/공" if n == 0 else sino(n))  # 공 is also zero
+        else:
+            correct = answer.replace(",", "").replace(" ", "") == str(n)
+        self.num_tries += 1
+        self.num_hits += correct
+        self.input.props("readonly")
+        with self.back:
+            ui.separator().classes("w-24 my-2")
+            ui.label(sino(n) if to_ko else f"{n:,}").classes("text-3xl text-center")
+        with self.feedback:
+            ui.label("✓ Correct" if correct else "✗ Not quite").classes(f"text-lg text-{'positive' if correct else 'negative'}")
+            ui.label("Enter to continue").classes("text-xs opacity-50")
 
     # end
 
