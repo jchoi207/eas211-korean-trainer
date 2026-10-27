@@ -8,6 +8,7 @@ NiceGUI app for drilling Korean vocab from markdown decks. Public repo, lives in
 - `session.py`: word selection, weighted order, requeueing misses.
 - `checking.py`: lenient typed-answer matching. `uv run python checking.py` runs its self-tests.
 - `vocab_io.py`: reads decks, reads/writes stats.
+- `numdrill.py`: Numbers study questions by category (`sino.py` does Sino-Korean). `uv run python numdrill.py` runs its self-tests.
 - `conj_io.py`: reads the conjugation table (one card per word × form), its stats, per-rule/form summaries. Derived forms (고 싶어해요) live in `DERIVED`. `uv run python conj_io.py` lists deck collisions.
 - `session.py` works on both `Word` and `conj_io.Card` via `key`, `stats()`, `ask()`, `expect()`.
 - `decks/<course>/<name>.md`: tracked. Columns `korean | english | tags | notes` only.

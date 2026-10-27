@@ -33,7 +33,7 @@ Every column after `rule` is a form. `nan` = the form doesn't exist for that wor
 
 ## Numbers
 
-Switch Study to Numbers for Sino-Korean numbers (0 to 99,999,999). Pick a range and a direction (123 → 한, 한 → 123, or mixed), then type the answer. Nothing is saved.
+Switch Study to Numbers and pick a category: Sino-Korean (0 to 99,999,999), Native (1 to 99), Counting (두 병), Time, Age, Dates, Price, Phone, or Mixed. Then pick a mode and a direction (123 or English → 한, 한 → 123 or English, or mixed). Nothing is saved.
 
 ## Stats
 
