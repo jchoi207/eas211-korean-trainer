@@ -305,3 +305,32 @@ tags: [eas211, vocab]
 | 입다 | To wear | l05-c2 |  |
 | 인터넷 | Internet | l05-c2 |  |
 | 필통 | Pencil case | l05-c2 |  |
+| 놀이공원 | Amusement park | l06-c1 |  |
+| 누구 | Who | l06-c1 |  |
+| 놀이 기구 | Ride | l06-c1 |  |
+| 타다 | To ride, get on | l06-c1 |  |
+| 무슨 | What kind of...? | l06-c1 |  |
+| 피자 | Pizza | l06-c1 |  |
+| 쇼핑몰 | Shopping mall | l06-c1 |  |
+| 엄마 | Mom | l06-c1 |  |
+| 피곤하다 | To be tired | l06-c1 |  |
+| 보통 | Usually | l06-c1 |  |
+| 일어나다 | To get up | l06-c1 |  |
+| 은행 | Bank | l06-c1 |  |
+| 할머니 | Grandmother | l06-c1 |  |
+| 할아버지 | Grandfather | l06-c1 |  |
+| 사과 | Apple | l06-c1 |  |
+| 배 | Pear | l06-c1 |  |
+| 가게 | Shop | l06-c1 |  |
+| 샌드위치 | Sandwich | l06-c1 |  |
+| 영어 | English | l06-c1 |  |
+| 연필 | Pencil | l06-c1 |  |
+| 지난 | Past | l06-c1 |  |
+| 티브이 | TV | l06-c1 |  |
+| 어땠어요? | How was ...? | l06-c1 |  |
+| 슬프다 | To be sad | l06-c1 |  |
+| 유튜브 | YouTube | l06-c1 |  |
+| 그림 | Painting | l06-c1 |  |
+| 혼자 | Alone | l06-c1 |  |
+| 산책하다 | To take a walk | l06-c1 |  |
+| 여자친구 | Girlfriend | l06-c1 |  |
