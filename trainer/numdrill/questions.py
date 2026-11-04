@@ -2,10 +2,11 @@
 
 import random
 import re
+from collections.abc import Iterable
 from dataclasses import dataclass
 
-from checking import check
-from sino import MAX as SINO_MAX, sino
+from trainer.numdrill.sino import MAX as SINO_MAX, sino
+from trainer.study.checking import check
 
 CATEGORIES = {
     "sino": "Sino-Korean",
@@ -16,9 +17,8 @@ CATEGORIES = {
     "date": "Dates",
     "price": "Price",
     "phone": "Phone",
-    "mixed": "Mixed",
 }
-RANGED = {"sino", "native", "count", "age", "mixed"}  # categories that use the From/To range
+RANGED = {"sino", "native", "count", "age"}  # categories that use the From/To range
 
 _ONES = ["", "하나", "둘", "셋", "넷", "다섯", "여섯", "일곱", "여덟", "아홉"]
 _TENS = ["", "열", "스물", "서른", "마흔", "쉰", "예순", "일흔", "여든", "아흔"]
@@ -98,6 +98,11 @@ def _native(lo: int, hi: int) -> Q:
     return Q(f"{n}", native(n), (str(n),))
 
 
+def _tens() -> Q:
+    n = random.randint(1, 9) * 10
+    return Q(f"{n}", native(n), (str(n),))
+
+
 def _count(lo: int, hi: int) -> Q:
     n = random.randint(lo, hi)
     unit, one, many = random.choice(UNITS)
@@ -154,26 +159,18 @@ _MAKERS = {
 }
 
 
-def make(cat: str, lo: int, hi: int) -> Q:
-    if cat == "mixed":
-        cat = random.choice(list(_MAKERS))
+def usable(cats: Iterable[str], lo: int, hi: int, tens: bool = False) -> list[str]:
+    """The categories that can make a question with this From/To range. Empty cats = all.
+    With tens, native ignores the range."""
+    return [c for c in (cats or CATEGORIES) if c not in RANGED or (tens and c == "native") or span(c, lo, hi)]
+
+
+def make(cats: Iterable[str], lo: int, hi: int, tens: bool = False) -> Q:
+    """A question from a random one of cats (empty = all) that the range allows.
+    With tens, native questions are 10, 20, ... 90 whatever the range."""
+    cat = random.choice(usable(cats, lo, hi, tens))
+    if tens and cat == "native":
+        return _tens()
     lo, hi = span(cat, lo, hi) or (1, 99)
     return _MAKERS[cat](lo, hi)
 
-
-if __name__ == "__main__":
-    assert native(1) == "하나" and native(20) == "스물" and native(99) == "아흔아홉"
-    assert native(1, True) == "한" and native(20, True) == "스무" and native(21, True) == "스물한"
-    assert native(24, True) == "스물네" and native(10, True) == "열" and native(12, True) == "열두"
-    assert en_num(2) == "two" and en_num(21) == "twenty-one" and en_num(40) == "forty"
-    assert span("sino", 0, 100) == (0, 100) and span("native", 0, 200) == (1, 99) and span("native", 100, 200) is None
-    for _ in range(300):  # every category runs, and its own answer is accepted both ways
-        for cat in _MAKERS:
-            q = make(cat, 0, 100)
-            assert q.ko_ok(q.ko) and q.en_ok(q.prompt), (cat, q)
-    random.seed(0)
-    q = Q("3:30 p.m.", "오후 세 시 반", ("3:30 p.m.", "3:30pm"), ("오후 세 시 삼십 분",))
-    assert q.ko_ok("오후 세 시 삼십 분") and q.ko_ok("오후세시반") and q.en_ok("3:30 PM")
-    p = Q("010-123-4567", "영일영 일이삼 사오육칠", ("010-123-4567",), gong=True)
-    assert p.ko_ok("공일공 일이삼 사오육칠")
-    print("ok")

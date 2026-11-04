@@ -37,17 +37,3 @@ def check(answer: str, target: str) -> bool:
         return _squash(a) in {_squash(f) for f in forms}
     return a in forms or any(a.startswith(p) and a[len(p):] in forms for p in ("to ", "please "))
 
-
-if __name__ == "__main__":
-    assert check("be glad", "To be glad (to meet)")
-    assert check("to be glad", "To be glad (to meet)")
-    assert check("to be glad to meet", "To be glad (to meet)")
-    assert check("저", "저 (나)") and check("나", "저 (나)")
-    assert check("이름이뭐예요", "이름이 뭐예요?")
-    assert check("person", "Person/people") and check("people", "Person/people")
-    assert check("we", "We, our (my)") and check("my", "We, our (my)")
-    assert check("the philippines", "The Philippines")
-    assert check("mr", "Mr./Ms. (first name)") and check("mr./ms.", "Mr./Ms. (first name)")
-    assert check("sit down", "please sit down") and check("please sit down", "sit down")
-    assert not check("", "USA") and not check("canada", "USA")
-    print("ok")

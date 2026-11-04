@@ -6,10 +6,10 @@ Flashcard and typing drills for Korean vocab. Words live in markdown decks under
 
 ```
 uv sync
-uv run app.py
+uv run python -m trainer
 ```
 
-Opens localhost:8520 with `decks/eas211/vocab.md`. Options: `--deck path/to/deck.md`, `--port N`.
+Opens localhost:8520 with `decks/eas211/vocab.md`. Options: `--deck path/to/deck.md`, `--port N`. `uv run pytest` runs the tests.
 
 ## Decks
 
@@ -33,7 +33,7 @@ Every column after `rule` is a form. `nan` = the form doesn't exist for that wor
 
 ## Numbers
 
-Switch Study to Numbers and pick a category: Sino-Korean (0 to 99,999,999), Native (1 to 99), Counting (두 병), Time, Age, Dates, Price, Phone, or Mixed. Then pick a mode and a direction (123 or English → 한, 한 → 123 or English, or mixed). Nothing is saved.
+Switch Study to Numbers and pick one or more categories (none = all): Sino-Korean (0 to 99,999,999), Native (1 to 99, or tens only: 10 to 90), Counting (두 병), Time, Age, Dates, Price, or Phone. Then pick a mode and a direction (123 or English → 한, 한 → 123 or English, or mixed). Nothing is saved.
 
 ## Stats
 

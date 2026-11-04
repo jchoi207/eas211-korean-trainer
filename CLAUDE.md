@@ -4,16 +4,18 @@ NiceGUI app for drilling Korean vocab from markdown decks. Public repo, lives in
 
 ## Layout
 
-- `app.py`: UI. Setup picks Study (words | conjugations) then Mode (learn | flashcards | typing). `--deck`, `--port`.
-- `session.py`: word selection, weighted order, requeueing misses.
-- `checking.py`: lenient typed-answer matching. `uv run python checking.py` runs its self-tests.
-- `vocab_io.py`: reads decks, reads/writes stats.
-- `numdrill.py`: Numbers study questions by category (`sino.py` does Sino-Korean). `uv run python numdrill.py` runs its self-tests.
-- `conj_io.py`: reads the conjugation table (one card per word × form), its stats, per-rule/form summaries. Derived forms (고 싶어해요) live in `DERIVED`. `uv run python conj_io.py` lists deck collisions.
-- `session.py` works on both `Word` and `conj_io.Card` via `key`, `stats()`, `ask()`, `expect()`.
+Run with `uv run python -m trainer` (`--deck`, `--port`). Tests: `uv run pytest`.
+
+- `trainer/__main__.py`: args, starts the app. `paths.py`: deck, stats and starred paths.
+- `trainer/ui/`: NiceGUI. `trainer.py` is the `Trainer` shell (state, keyboard routing, page). `setup.py` (Study then Mode pickers, word list), `study.py` (learn, flashcards, typing, end screen), `numbers.py` (`NumbersScreen`, own state), `widgets.py` (shared constants). Setup and study are mixins on `Trainer`.
+- `trainer/study/`: `session.py` (word selection, weighted order, requeueing misses), `checking.py` (lenient typed-answer matching).
+- `trainer/data/`: `stats.py` (stats JSON, stars, paths), `table.py` (markdown table parsing), `vocab.py` (`Word`, decks), `conjugations.py` (`Card`, one per word x form, per-rule/form summaries, deck collision check; derived forms like 고 싶어해요 live in `DERIVED`).
+- `trainer/numdrill/`: Numbers study questions by category (`questions.py`), Sino-Korean reading (`sino.py`).
+- `session.py` works on both `Word` and `conjugations.Card` via `key`, `stats()`, `ask()`, `expect()`.
 - `decks/<course>/<name>.md`: tracked. Columns `korean | english | tags | notes` only.
 - `decks/<course>/conjugations.md`: `korean | english | tags | pos | rule | <form>...`, `nan` where a form doesn't exist. Edit via the `conjugate` skill.
 - `stats/<course>/<name>.json`: gitignored, per-user progress.
+- `tests/`: unit tests, deck collision check, and a render smoke test for every screen.
 
 ## Rules
 

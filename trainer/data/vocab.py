@@ -4,18 +4,16 @@ The app never writes the deck. Stats are keyed by (korean, english), so editing 
 word's tags or notes keeps its history, and renaming it starts fresh.
 """
 
-import json
-import os
-import re
-import tempfile
 from dataclasses import dataclass, field
 from datetime import date
 from pathlib import Path
 
+from trainer.data import stats as store
+from trainer.data.stats import MAX_BOX
+from trainer.data.table import find_table
+
 DECK_COLUMNS = ["korean", "english", "tags", "notes"]
 COLUMNS = DECK_COLUMNS + ["ko→en", "en→ko", "box", "score", "last"]  # shown in the word table
-MAX_BOX = 5
-_SPLIT = re.compile(r"(?<!\\)\|")
 
 
 @dataclass
@@ -59,63 +57,22 @@ class Word:
         return self.english if direction == "ko→en" else self.korean
 
 
-def fmt_ratio(r: tuple[int, int]) -> str:
-    return f"{r[0]}/{r[1]}" if r[1] else ""
-
-
 # deck
-
-
-def _cells(line: str) -> list[str]:
-    parts = _SPLIT.split(line.strip().strip("|"))
-    return [p.strip().replace("\\|", "|") for p in parts]
 
 
 def load_deck(path: Path) -> list[Word]:
     """Words from the first table whose header starts korean | english."""
-    lines = path.read_text(encoding="utf-8").splitlines()
-    for i, line in enumerate(lines):
-        header = _cells(line) if line.lstrip().startswith("|") else []
-        if header[:2] != ["korean", "english"]:
-            continue
-        words, j = [], i + 2  # skip header + separator
-        while j < len(lines) and lines[j].lstrip().startswith("|"):
-            c = dict(zip(header, _cells(lines[j])))
-            words.append(Word(c.get("korean", ""), c.get("english", ""), c.get("tags", "").split(), c.get("notes", "")))
-            j += 1
-        return words
-    raise ValueError(f"{path}: no vocab table (header 'korean | english | ...') found")
+    table = find_table(path, ["korean", "english"])
+    if table is None:
+        raise ValueError(f"{path}: no vocab table (header 'korean | english | ...') found")
+    return [Word(c.get("korean", ""), c.get("english", ""), c.get("tags", "").split(), c.get("notes", "")) for c in table[1]]
 
 
 # stats
 
 
-def stats_path(deck: Path, decks_dir: Path, stats_dir: Path) -> Path:
-    """decks/eas211/vocab.md -> stats/eas211/vocab.json. Decks elsewhere -> stats/<name>.json."""
-    try:
-        rel = deck.resolve().relative_to(decks_dir.resolve())
-    except ValueError:
-        rel = Path(deck.name)
-    return stats_dir / rel.with_suffix(".json")
-
-
 def _key(korean: str, english: str) -> str:
     return f"{korean}\t{english}"
-
-
-def _read_stats(path: Path) -> dict | list:
-    if not path.exists():
-        return {}
-    return json.loads(path.read_text(encoding="utf-8"))
-
-
-def _write_stats(path: Path, stats: dict | list) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    fd, tmp = tempfile.mkstemp(dir=path.parent, prefix=".stats-", suffix=".tmp")
-    with os.fdopen(fd, "w", encoding="utf-8") as f:
-        json.dump(stats, f, ensure_ascii=False, indent=1, sort_keys=True)
-        f.write("\n")
-    os.replace(tmp, path)
 
 
 def _apply(w: Word, s: dict) -> None:
@@ -132,7 +89,7 @@ def _dump(w: Word) -> dict:
 def load(deck: Path, stats: Path) -> list[Word]:
     """Deck words with their stats attached."""
     words = load_deck(deck)
-    saved = _read_stats(stats)
+    saved = store.read(stats)
     for w in words:
         if s := saved.get(_key(*w.key)):
             _apply(w, s)
@@ -141,12 +98,12 @@ def load(deck: Path, stats: Path) -> list[Word]:
 
 def _update(stats: Path, key: tuple[str, str], fn) -> Word:
     """Apply fn to one word's stats. Re-reads the file first so other sessions' writes survive."""
-    saved = _read_stats(stats)
+    saved = store.read(stats)
     w = Word(*key)
     _apply(w, saved.get(_key(*key), {}))
     fn(w)
     saved[_key(*key)] = _dump(w)
-    _write_stats(stats, saved)
+    store.write(stats, saved)
     return w
 
 
@@ -172,17 +129,3 @@ def undo_miss(stats: Path, key: tuple[str, str], direction: str, prev_box: int) 
         w.box = min(prev_box + 1, MAX_BOX)
 
     return _update(stats, key, fn)
-
-
-# stars: per Korean word, shared by its vocab rows and its conjugation cards
-
-
-def load_starred(path: Path) -> set[str]:
-    return set(_read_stats(path))
-
-
-def toggle_star(path: Path, korean: str) -> set[str]:
-    """Star or unstar a word. Re-reads the file first so other sessions' writes survive."""
-    starred = load_starred(path) ^ {korean}
-    _write_stats(path, sorted(starred))
-    return starred

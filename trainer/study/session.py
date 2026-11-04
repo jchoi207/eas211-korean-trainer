@@ -7,7 +7,8 @@ stats(direction), ask(direction) and expect(direction).
 import random
 from datetime import date
 
-from vocab_io import MAX_BOX, Word
+from trainer.data.stats import MAX_BOX
+from trainer.data.vocab import Word
 
 REQUEUE_GAP = 3  # a missed word comes back this many cards later
 

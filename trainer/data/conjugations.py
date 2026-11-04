@@ -5,14 +5,15 @@ after `rule` is a form and `nan` marks a form that doesn't exist. One card per
 (word, form). Stats are keyed by korean + form.
 """
 
-import sys
+from collections import Counter
 from dataclasses import dataclass, field
 from datetime import date
 from pathlib import Path
 
-from collections import Counter
-
-from vocab_io import MAX_BOX, Word, _cells, _read_stats, _write_stats
+from trainer.data import stats as store
+from trainer.data.stats import MAX_BOX
+from trainer.data.table import find_table
+from trainer.data.vocab import Word
 
 FIXED = ["korean", "english", "tags", "pos", "rule"]
 NAN = "nan"
@@ -57,30 +58,26 @@ class Card:
 
 def load_table(path: Path) -> tuple[list[Card], list[str]]:
     """All cards, and the form names in column order (derived forms after their source)."""
-    lines = path.read_text(encoding="utf-8").splitlines()
-    for i, line in enumerate(lines):
-        header = _cells(line) if line.lstrip().startswith("|") else []
-        if header[: len(FIXED)] != FIXED:
-            continue
-        forms = []
+    table = find_table(path, FIXED)
+    if table is None:
+        raise ValueError(f"{path}: no conjugation table (header '{' | '.join(FIXED)} | ...') found")
+    header, rows = table
+    forms = []
+    for f in header[len(FIXED):]:
+        forms.append(f)
+        forms += [d[0] for d in DERIVED if d[1] == f]
+    cards = []
+    for c in rows:
+        base = dict(korean=c["korean"], english=c["english"], rule=c["rule"], pos=c["pos"], tags=c["tags"].split())
         for f in header[len(FIXED):]:
-            forms.append(f)
-            forms += [d[0] for d in DERIVED if d[1] == f]
-        cards, j = [], i + 2
-        while j < len(lines) and lines[j].lstrip().startswith("|"):
-            c = dict(zip(header, _cells(lines[j])))
-            base = dict(korean=c["korean"], english=c["english"], rule=c["rule"], pos=c["pos"], tags=c["tags"].split())
-            for f in header[len(FIXED):]:
-                t = c.get(f, "")
-                if not t or t == NAN:
-                    continue
-                cards.append(Card(form=f, target=t, **base))
-                for label, src, old, new in DERIVED:
-                    if src == f and old in t:
-                        cards.append(Card(form=label, target=t.replace(old, new), **base))
-            j += 1
-        return cards, forms
-    raise ValueError(f"{path}: no conjugation table (header '{' | '.join(FIXED)} | ...') found")
+            t = c.get(f, "")
+            if not t or t == NAN:
+                continue
+            cards.append(Card(form=f, target=t, **base))
+            for label, src, old, new in DERIVED:
+                if src == f and old in t:
+                    cards.append(Card(form=label, target=t.replace(old, new), **base))
+    return cards, forms
 
 
 def _key(korean: str, form: str) -> str:
@@ -95,7 +92,7 @@ def _apply(c: Card, s: dict) -> None:
 
 def load(table: Path, stats: Path) -> tuple[list[Card], list[str]]:
     cards, forms = load_table(table)
-    saved = _read_stats(stats)
+    saved = store.read(stats)
     for c in cards:
         if s := saved.get(_key(*c.key)):
             _apply(c, s)
@@ -103,12 +100,12 @@ def load(table: Path, stats: Path) -> tuple[list[Card], list[str]]:
 
 
 def _update(stats: Path, key: tuple[str, str], fn) -> Card:
-    saved = _read_stats(stats)
+    saved = store.read(stats)
     c = Card(key[0], "", key[1], "")
     _apply(c, saved.get(_key(*key), {}))
     fn(c)
     saved[_key(*key)] = {"ok": list(c.ok), "box": c.box, "last": c.last}
-    _write_stats(stats, saved)
+    store.write(stats, saved)
     return c
 
 
@@ -156,12 +153,3 @@ def problems(words: list[Word], cards: list[Card]) -> list[str]:
             out.append(f"conjugations: {c.korean} is '{c.english}' {c.tags}, vocab has '{w.english}' {w.tags}")
     return out
 
-
-if __name__ == "__main__":
-    # uv run python conj_io.py [decks/eas211]: list deck collisions
-    from vocab_io import load_deck
-
-    d = Path(sys.argv[1] if len(sys.argv) > 1 else "decks/eas211")
-    found = problems(load_deck(d / "vocab.md"), load_table(d / "conjugations.md")[0])
-    print("\n".join(found) or "ok")
-    sys.exit(bool(found))
