@@ -26,7 +26,7 @@ tags: [eas211, vocab, conjugation]
 | 배우다 | To learn | l03-c1 | verb | vowel stem | 배워요 | 배우지요 | 배우러 가요 | 배우고 싶어요 |
 | 마시다 | To drink | l03-c1 | verb | vowel stem | 마셔요 | 마시지요 | 마시러 가요 | 마시고 싶어요 |
 | 지내다 | To spend | l03-c1 | verb | vowel stem | 지내요 | 지내지요 | 지내러 가요 | 지내고 싶어요 |
-| 크다 | To be big | l03-c1 | adj | ㅡ drop | 커요 | 크지요 | nan | nan |
+| 크다 | To be big | l03-c1 l06-c2 | adj | ㅡ drop | 커요 | 크지요 | nan | nan |
 | 자다 | To sleep | l03-c1 | verb | vowel stem | 자요 | 자지요 | 자러 가요 | 자고 싶어요 |
 | 보내다 | To send | l03-c1 | verb | vowel stem | 보내요 | 보내지요 | 보내러 가요 | 보내고 싶어요 |
 | 나쁘다 | To be bad | l03-c1 | adj | ㅡ drop | 나빠요 | 나쁘지요 | nan | nan |
@@ -36,7 +36,7 @@ tags: [eas211, vocab, conjugation]
 | 읽다 | To read | l03-c1 | verb | 받침 | 읽어요 | 읽지요 | 읽으러 가요 | 읽고 싶어요 |
 | 계시다 | To stay (honorific form) | l03-c2 | verb | honorific | 계세요 | 계시지요 | nan | nan |
 | 재미있다 | To be fun | l03-c2 | adj | 받침 | 재미있어요 | 재미있지요 | nan | nan |
-| 작다 | To be small | l03-c2 | adj | 받침 | 작아요 | 작지요 | nan | nan |
+| 작다 | To be small | l03-c2 l06-c2 | adj | 받침 | 작아요 | 작지요 | nan | nan |
 | 배고프다 | To be hungry | l04-c1 | adj | ㅡ drop | 배고파요 | 배고프지요 | nan | nan |
 | 듣다 | To listen | l04-c1 | verb | ㄷ irregular | 들어요 | 듣지요 | 들으러 가요 | 듣고 싶어요 |
 | 만나다 | To meet | l04-c1 | verb | vowel stem | 만나요 | 만나지요 | 만나러 가요 | 만나고 싶어요 |

@@ -91,7 +91,7 @@ tags: [eas211, vocab]
 | 배우다 | To learn | l03-c1 |  |
 | 마시다 | To drink | l03-c1 |  |
 | 지내다 | To spend | l03-c1 | spend time, get along (잘 지내요?) |
-| 크다 | To be big | l03-c1 |  |
+| 크다 | To be big | l03-c1 l06-c2 | also: tall |
 | 자다 | To sleep | l03-c1 |  |
 | 보내다 | To send | l03-c1 |  |
 | 나쁘다 | To be bad | l03-c1 |  |
@@ -144,7 +144,7 @@ tags: [eas211, vocab]
 | -들 | Plural marker | l03-c2 |  |
 | 그리고 | And | l03-c2 | links clauses/sentences ("and then, also") |
 | 아주 | Very | l03-c2 |  |
-| 작다 | To be small | l03-c2 |  |
+| 작다 | To be small | l03-c2 l06-c2 | also: short |
 | 배고프다 | To be hungry | l04-c1 |  |
 | 근처 | Nearby | l04-c1 | also: vicinity, neighbourhood |
 | 이 | This | l04-c1 | before a noun (이 책); also: 2 (Sino-Korean), tooth, subject particle -이 |
@@ -334,3 +334,39 @@ tags: [eas211, vocab]
 | 혼자 | Alone | l06-c1 |  |
 | 산책하다 | To take a walk | l06-c1 |  |
 | 여자친구 | Girlfriend | l06-c1 |  |
+| 버스 | Bus | l06-c2 |  |
+| 편리하다 | To be convenient | l06-c2 |  |
+| 얼마나 | How long | l06-c2 |  |
+| 걸리다 | To take (time) | l06-c2 |  |
+| 스마트폰 | Smartphone | l06-c2 |  |
+| 쯤 | About | l06-c2 |  |
+| 어떻게 | How | l06-c2 |  |
+| 걸어서 | On foot | l06-c2 |  |
+| -에서 ~까지 | From - to~ | l06-c2 |  |
+| 택시 | Taxi | l06-c2 |  |
+| 서울 | Seoul | l06-c2 |  |
+| 비행기 | Airplane | l06-c2 |  |
+| 손 | Hand | l06-c2 |  |
+| 볼펜 | Ball-point pen | l06-c2 |  |
+| 트럭 | Truck | l06-c2 |  |
+| 부산 | Busan | l06-c2 |  |
+| 기차 | Train | l06-c2 |  |
+| 이메일 | E-mail | l06-c2 |  |
+| 숟가락 | Spoon | l06-c2 |  |
+| 제일 | The most | l06-c2 |  |
+| 느리다 | To be slow | l06-c2 |  |
+| 에베레스트 산 | Mt. Everest | l06-c2 |  |
+| 세상에서 | In the world | l06-c2 |  |
+| 높다 | To be high | l06-c2 |  |
+| 계절 | Season | l06-c2 |  |
+| 겨울 | Winter | l06-c2 |  |
+| 밤 | Night | l06-c2 |  |
+| 아침 | Morning, breakfast | l06-c2 |  |
+| 가을 | Fall | l06-c2 |  |
+| 여름 | Summer | l06-c2 |  |
+| 봄 | Spring | l06-c2 |  |
+| 무척 | Very | l06-c2 |  |
+| 누가 | Who | l06-c2 |  |
+| 유니온 역 | Union Station | l06-c2 |  |
+| 쇼핑하다 | To shop | l06-c2 |  |
+| 방콕 | Bangkok | l06-c2 |  |
