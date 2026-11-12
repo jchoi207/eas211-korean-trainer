@@ -21,7 +21,7 @@ tags: [eas211, vocab, conjugation]
 | 숙제하다 | To do homework | l03-c1 | verb | 하다 | 숙제해요 | 숙제하지요 | 숙제하러 가요 | 숙제하고 싶어요 |
 | 좋다 | To be good | l03-c1 | adj | 받침 | 좋아요 | 좋지요 | nan | nan |
 | 오다 | To come | l03-c1 | verb | vowel stem | 와요 | 오지요 | nan | 오고 싶어요 |
-| 보다 | To see | l03-c1 | verb | vowel stem | 봐요 | 보지요 | 보러 가요 | 보고 싶어요 |
+| 보다 | To see | l03-c1 l07-c1 | verb | vowel stem | 봐요 | 보지요 | 보러 가요 | 보고 싶어요 |
 | 주다 | To give | l03-c1 | verb | vowel stem | 줘요 | 주지요 | 주러 가요 | 주고 싶어요 |
 | 배우다 | To learn | l03-c1 | verb | vowel stem | 배워요 | 배우지요 | 배우러 가요 | 배우고 싶어요 |
 | 마시다 | To drink | l03-c1 | verb | vowel stem | 마셔요 | 마시지요 | 마시러 가요 | 마시고 싶어요 |

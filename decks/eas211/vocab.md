@@ -86,7 +86,7 @@ tags: [eas211, vocab]
 | 숙제하다 | To do homework | l03-c1 |  |
 | 좋다 | To be good | l03-c1 |  |
 | 오다 | To come | l03-c1 |  |
-| 보다 | To see | l03-c1 |  |
+| 보다 | To see | l03-c1 l07-c1 | also: to take (a test) |
 | 주다 | To give | l03-c1 |  |
 | 배우다 | To learn | l03-c1 |  |
 | 마시다 | To drink | l03-c1 |  |
@@ -171,7 +171,7 @@ tags: [eas211, vocab]
 | 놀다 | To hang out | l04-c1 | also: to play, to have fun |
 | 치다 | To play | l04-c1 | sports hit with hand/racket (테니스를 치다), instruments (피아노); also: to hit |
 | 테니스 | Tennis | l04-c1 |  |
-| 저녁 | Dinner (evening time) | l04-c1 | also: evening |
+| 저녁 | Dinner (evening time) | l04-c1 l07-c1 | also: evening |
 | 수영장 | Swimming pool | l04-c1 |  |
 | 수영하다 | To swim | l04-c1 |  |
 | 날씨 | Weather | l04-c1 |  |
@@ -320,7 +320,7 @@ tags: [eas211, vocab]
 | 할머니 | Grandmother | l06-c1 |  |
 | 할아버지 | Grandfather | l06-c1 |  |
 | 사과 | Apple | l06-c1 |  |
-| 배 | Pear | l06-c1 |  |
+| 배 | Pear | l06-c1 l07-c1 | also: stomach |
 | 가게 | Shop | l06-c1 |  |
 | 샌드위치 | Sandwich | l06-c1 |  |
 | 영어 | English | l06-c1 |  |
@@ -370,3 +370,39 @@ tags: [eas211, vocab]
 | 유니온 역 | Union Station | l06-c2 |  |
 | 쇼핑하다 | To shop | l06-c2 |  |
 | 방콕 | Bangkok | l06-c2 |  |
+| 매일 | Everyday | l07-c1 |  |
+| 잘 | Well | l07-c1 |  |
+| 가르치다 | To teach | l07-c1 |  |
+| 친절하다 | To be kind | l07-c1 |  |
+| 다음 | Next | l07-c1 |  |
+| 학기 | Semester | l07-c1 |  |
+| 음악 | Music | l07-c1 |  |
+| 주무시다 | To sleep (honorific) | l07-c1 |  |
+| 드시다 | To eat (honorific) | l07-c1 |  |
+| 나이 | Age | l07-c1 |  |
+| 연세 | Age (honorific) | l07-c1 |  |
+| 잘하다 | To do well | l07-c1 |  |
+| 기다리다 | To wait | l07-c1 |  |
+| 아침 (밥) | Breakfast | l07-c1 |  |
+| 예쁘다 | To be pretty | l07-c1 |  |
+| 맑다 | To be clear | l07-c1 |  |
+| 김치찌개 | Kimchi stew | l07-c1 |  |
+| 일찍 | Early | l07-c1 |  |
+| 따뜻하다 | To be warm | l07-c1 |  |
+| 늦다 | To be late | l07-c1 |  |
+| 키 | Height | l07-c1 |  |
+| 눈이 오다 | To snow | l07-c1 |  |
+| 가족 | Family | l07-c1 |  |
+| 건강하다 | To be healthy | l07-c1 |  |
+| 다리 | Legs | l07-c1 |  |
+| 조금 (좀) | A little | l07-c1 |  |
+| 괜찮다 | To be okay | l07-c1 |  |
+| 돌아가시다 | To pass away | l07-c1 |  |
+| 지난달 | Last month | l07-c1 |  |
+| 동안 | During | l07-c1 |  |
+| 나오다 | To come out, leave | l07-c1 |  |
+| 막히다 | To be congested | l07-c1 |  |
+| 늦게 | Late | l07-c1 |  |
+| 아직 | (not) yet | l07-c1 |  |
+| 청소하다 | To clean | l07-c1 |  |
+| 설거지하다 | To wash the dishes | l07-c1 |  |
