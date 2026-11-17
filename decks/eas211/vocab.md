@@ -86,12 +86,12 @@ tags: [eas211, vocab]
 | 숙제하다 | To do homework | l03-c1 |  |
 | 좋다 | To be good | l03-c1 |  |
 | 오다 | To come | l03-c1 |  |
-| 보다 | To see | l03-c1 l07-c1 | also: to take (a test) |
+| 보다 | To see | l03-c1 l07-c1 | l07-c1: To take (a test) |
 | 주다 | To give | l03-c1 |  |
 | 배우다 | To learn | l03-c1 |  |
 | 마시다 | To drink | l03-c1 |  |
 | 지내다 | To spend | l03-c1 | spend time, get along (잘 지내요?) |
-| 크다 | To be big | l03-c1 l06-c2 | also: tall |
+| 크다 | To be big | l03-c1 l06-c2 | l06-c2: To be tall |
 | 자다 | To sleep | l03-c1 |  |
 | 보내다 | To send | l03-c1 |  |
 | 나쁘다 | To be bad | l03-c1 |  |
@@ -144,7 +144,7 @@ tags: [eas211, vocab]
 | -들 | Plural marker | l03-c2 |  |
 | 그리고 | And | l03-c2 | links clauses/sentences ("and then, also") |
 | 아주 | Very | l03-c2 |  |
-| 작다 | To be small | l03-c2 l06-c2 | also: short |
+| 작다 | To be small | l03-c2 l06-c2 | l06-c2: To be short |
 | 배고프다 | To be hungry | l04-c1 |  |
 | 근처 | Nearby | l04-c1 | also: vicinity, neighbourhood |
 | 이 | This | l04-c1 | before a noun (이 책); also: 2 (Sino-Korean), tooth, subject particle -이 |
@@ -171,7 +171,7 @@ tags: [eas211, vocab]
 | 놀다 | To hang out | l04-c1 | also: to play, to have fun |
 | 치다 | To play | l04-c1 | sports hit with hand/racket (테니스를 치다), instruments (피아노); also: to hit |
 | 테니스 | Tennis | l04-c1 |  |
-| 저녁 | Dinner (evening time) | l04-c1 l07-c1 | also: evening |
+| 저녁 | Dinner (evening time) | l04-c1 l07-c1 | l07-c1: Evening |
 | 수영장 | Swimming pool | l04-c1 |  |
 | 수영하다 | To swim | l04-c1 |  |
 | 날씨 | Weather | l04-c1 |  |
@@ -320,7 +320,7 @@ tags: [eas211, vocab]
 | 할머니 | Grandmother | l06-c1 |  |
 | 할아버지 | Grandfather | l06-c1 |  |
 | 사과 | Apple | l06-c1 |  |
-| 배 | Pear | l06-c1 l07-c1 | also: stomach |
+| 배 | Pear | l06-c1 l07-c1 | l07-c1: Stomach |
 | 가게 | Shop | l06-c1 |  |
 | 샌드위치 | Sandwich | l06-c1 |  |
 | 영어 | English | l06-c1 |  |
@@ -406,3 +406,65 @@ tags: [eas211, vocab]
 | 아직 | (not) yet | l07-c1 |  |
 | 청소하다 | To clean | l07-c1 |  |
 | 설거지하다 | To wash the dishes | l07-c1 |  |
+| 스키 | Ski | l07-c2 |  |
+| 블루마운틴 | Blue Mountain | l07-c2 |  |
+| 약속 | Plan, appointment | l07-c2 |  |
+| 그냥 | Just | l07-c2 |  |
+| 골프 | Golf | l07-c2 |  |
+| 농구 | Basketball | l07-c2 |  |
+| 잠 | Sleeping | l07-c2 |  |
+| 덥다 | To be hot | l07-c2 |  |
+| 멀다 | To be far | l07-c2 |  |
+| 가깝다 | To be close | l07-c2 |  |
+| 눈 | Snow | l07-c2 |  |
+| 남자 친구 | Boyfriend | l07-c2 |  |
+| 약 | Medicine | l07-c2 |  |
+| 싸다 | To be cheap | l07-c2 |  |
+| 언니 | Older sister (female speaker) | l07-c2 |  |
+| 축구 | Soccer | l07-c2 |  |
+| 끝나다 | To end | l07-c2 |  |
+| 준비하다 | To prepare | l07-c2 |  |
+| 흐리다 | To be cloudy | l07-c2 |  |
+| 방 | Room | l07-c2 |  |
+| 만들다 | To make | l07-c2 |  |
+| 컴퓨터 게임 | Computer game | l07-c2 |  |
+| 전화하다 | To call | l07-c2 |  |
+| 돌아오다 | To return | l07-c2 |  |
+| 스케이트 | Skate | l08-c1 |  |
+| 스케이트장 | Skate rink | l08-c1 |  |
+| 잘됐네요 | That's great | l08-c1 |  |
+| 스노보드 | Snowboard | l08-c1 |  |
+| 자전거 | Bicycle | l08-c1 |  |
+| 김치 | Kimchi | l08-c1 |  |
+| 부르다 | To sing | l08-c1 | 르-irregular |
+| 말하다 | To speak | l08-c1 |  |
+| 감기에 걸리다 | To catch a cold | l08-c1 |  |
+| 저기 | Over there | l08-c1 |  |
+| 세우다 | To pull over, stop | l08-c1 |  |
+| 돕다 | To help | l08-c1 | ㅂ-irregular |
+| 미역국 | Seaweed soup | l08-c1 | birthday soup |
+| 아기 | Baby | l08-c1 |  |
+| 귀엽다 | To be cute | l08-c1 | ㅂ-irregular |
+| 춤 | Dance | l08-c1 | noun |
+| 추다 | To dance | l08-c1 | 춤을 추다 |
+| 꽃 | Flower | l08-c1 |  |
+| 치마 | Skirt | l08-c1 |  |
+| 드라마 | Drama | l08-c1 |  |
+| 어떤 | What kind of | l08-c1 |  |
+| 추천하다 | To recommend | l08-c1 |  |
+| 옛날 | Old days | l08-c1 |  |
+| 발라드 | Ballad | l08-c1 |  |
+| 곡 | Tune, melody | l08-c1 |  |
+| 댄스 | Dance | l08-c1 | genre |
+| 간장 | Soy sauce | l08-c1 |  |
+| 참기름 | Sesame oil | l08-c1 |  |
+| 설탕 | Sugar | l08-c1 |  |
+| 마늘 | Garlic | l08-c1 |  |
+| 익히다 | To cook | l08-c1 |  |
+| 넣다 | To put in | l08-c1 | put (something) in (somewhere) |
+| 열다 | To open | l08-c1 | ㄹ-irregular |
+| 닫다 | To close | l08-c1 |  |
+| 창문 | Window | l08-c1 |  |
+| 문 | Door | l08-c1 |  |
+| 목소리 | Voice | l08-c1 |  |
+| 크게 | Loudly | l08-c1 |  |
